@@ -26,11 +26,11 @@ This repository contains the source code for a Flask-based web application. It i
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/yourrepositoryname.git
+   git clone https://github.com/SaiKolapudi/Secure_Ecommerce.git
    ```
 2. Navigate to the project directory:
    ```bash
-   cd yourrepositoryname
+   cd Secure_Ecommerce
    ```
 3. Install required packages:
    ```bash
