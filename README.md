@@ -70,15 +70,10 @@ This repository contains the source code for a Flask-based web application. It i
 - Administrators can add, update, or remove products.
 
 
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
-
-
 ## Acknowledgments
 
 - [Flask](https://flask.palletsprojects.com/)
 - [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 - [PayPal Developer](https://developer.paypal.com/)
 - [Flask-Mail](https://pythonhosted.org/Flask-Mail/)
-```
+
