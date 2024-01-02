@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="https://www.paypal.com/sdk/js?client-id=ATlDLwfnX0Nh-hrwtP_hrynBy1xwYS0CfpH7JL5dveG3EJvpMOtSTAUdYi41AO3l_nmw_BB6b1aJ1xkW"></script>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f7f7f7;
+        }
+        .header {
+            background: #008037;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        form {
+            width: 100%;
+            max-width: 500px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #008037;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        input[type="submit"]:hover {
+            background-color: #006b2e;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Welcome to Our Online Grocery Store</h1>
+    </div>
+    <div class="main-content">
+        <h1>Checkout</h1>
+        <div id="paypal-button-container"></div>
+        <form action="{{ url_for('create_order') }}" method="post">
+            <h2>Delivery Address</h2>
+            <label for="address">Address:</label>
+            <textarea id="address" name="address" required></textarea>
+            <input type="submit" value="Place Order">
+        </form>
+    </div>
+
+    <script>
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '0.01' // Set this to the total amount
+                        }
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    return fetch('/paypal-transaction-complete', {
+                        method: 'post',
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            orderID: data.orderID
+                        })
+                    }).then(function() {
+                        window.location.href = "/order_success"; // Redirect to a success page
+                    });
+                });
+            }
+        }).render('#paypal-button-container');
+    </script>
+</body>
+</html>
